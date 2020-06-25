@@ -13,9 +13,14 @@ const authRoute = require('./routes/auth');
 
 dotenv.config();
 
+// The database to use
+ const dbName = "test";
+
+
 //connect to db
 mongoose.connect( process.env.DB_CONNECT, { useNewUrlParser: true }, () => console.log('DB connected!')
 );
+
 
 //middlewares
 app.use(express.json());
