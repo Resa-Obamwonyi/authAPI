@@ -13,12 +13,14 @@ const authRoute = require('./routes/auth');
 
 dotenv.config();
 
-// The database to use
- const dbName = "test";
-
 
 //connect to db
-mongoose.connect( process.env.DB_CONNECT, { useNewUrlParser: true }, () => console.log('DB connected!')
+mongoose.connect( process.env.DB_CONNECT, { useNewUrlParser: true }, (err) =>{ 
+	if(err){
+		console.log(err);
+		return;
+	}
+	console.log('DB connected!') }
 );
 
 
