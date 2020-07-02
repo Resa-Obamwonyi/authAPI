@@ -30,4 +30,5 @@ app.use(express.json());
 //route middlewares
 app.use('/api/user', authRoute);
 
+
 app.listen(3000, () => console.log('Server Running..'));
