@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const { signupValidation, loginValidation } = require('../validation');
 
 
+//Sign Up
 
 router.post('/signup', async (req, res) => {
 
@@ -32,11 +33,36 @@ router.post('/signup', async (req, res) => {
    //try to submit and catch errors
     try{
     	const savedUser = await user.save();
-    	res.send(savedUser);
+		res.send(savedUser);
+	//to avoid sending the entire user details
+	//res.send({user: user.id})
+	//replaces the res.send(savedUser) and sends back only the id
     }catch(err){
     	res.status(400).send(err);
     }
 });
+
+
+
+//Log in 
+router.post('/login', async (req,res) => {
+
+	//Validate data before logging In
+	const {error} = loginValidation(req.body);
+	if(error) return res.status(400).send(error.details[0].message);
+	//Check if the email exists
+	const user = await User.findOne({
+		email: req.body.email
+	});
+	if (!user) return res.status(400).send('Email does not exits');
+	//check if password is correct
+	const validPass = await bcrypt.compare(req.body.password, user.password);
+	if(!validPass) return res.status(400).send('Invalid Password');
+
+	//if all checks are cleared
+	res.send('You have successfully logged in');
+
+})
 
 
 module.exports = router;
